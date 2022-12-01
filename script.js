@@ -1,9 +1,8 @@
-let num1 = 0
-let num2 = 0
 let numAccumulator = "" 
-let actionSetter = "mul"
+let actionSetter = ""
 let secondActionFlag = 0
 let result = 0
+let actionSetterPrevious = ""
 
 
 //operate (actionSetter,num1,num2);
@@ -40,24 +39,31 @@ const actionButton = document.querySelectorAll('.action')
 const numpad = document.querySelectorAll('.numpad')
 
 
-equalsButton.addEventListener("click", pressEquals);
+equalsButton.addEventListener("click", ()=>{
+
+    // Only write = and result if = is pressed
+    numberDisplay.textContent = numberDisplay.textContent + equalsButton.textContent
+    pressEquals()
+    numberDisplay.textContent = numberDisplay.textContent + result
+
+    secondActionFlag = 0
+
+});
 
 function pressEquals(){
-    numberDisplay.textContent = numberDisplay.textContent + equalsButton.textContent
     console.log(actionSetter)
-    result = operate (actionSetter, num1, parseInt(numAccumulator))
-
-    numberDisplay.textContent = numberDisplay.textContent + result
-    secondActionFlag = 0
-    numAccumulator = ""
+    //console.log(`Before pressEquals result is:${result}, numAccumulator:${numAccumulator}`)
+    result = operate (actionSetter, result, parseInt(numAccumulator))
+    numAccumulator = ''
+    //console.log(`After pressEquals end result is:${result}, numAccumulator:${numAccumulator}`)
 }
 
 actionButton.forEach(item => 
     item.addEventListener("click", () => {
-        
-        numberDisplay.textContent = numberDisplay.textContent + item.textContent
-        num1 = parseInt(numAccumulator);        
+       
         // switch based on action button pressed 
+        actionSetterPrevious = actionSetter
+        console.log (`Before switch actionSetterPrevious:${actionSetterPrevious} actionSetter:${actionSetter}`)
         switch (item.textContent){
             case '+':
                 actionSetter = "add"
@@ -73,10 +79,25 @@ actionButton.forEach(item =>
                 actionSetter = "div"
                 break
         }
+        console.log (`After switch actionSetterPrevious:${actionSetterPrevious} actionSetter:${actionSetter}`)
 
 
+        // Second time leave result as is 
+        if (secondActionFlag == 1){
+            temp = actionSetter
+            actionSetter = actionSetterPrevious
+            pressEquals()
+            actionSetter = temp
+        } else {
+            // First time just put accumulator into result
+            result = parseInt(numAccumulator); 
+        }
+
+        numberDisplay.textContent = numberDisplay.textContent + item.textContent
         numAccumulator = ""
         secondActionFlag = 1
+        //console.log(`After actionButton end result is:${result}, numAccumulator:${numAccumulator} actionSetter:${actionSetter}`)
+        console.log (`After active actionSetterPrevious:${actionSetterPrevious} actionSetter:${actionSetter}`)
     })
 )
 
@@ -86,7 +107,7 @@ numpad.forEach(item =>
         numAccumulator = numAccumulator + item.textContent
         // console.log(numAccumulator)
         numberDisplay.textContent = numberDisplay.textContent + item.textContent
-        console.log(`result is:${result}, num1:${num1} numAccumulator:${numAccumulator}`)
+        //console.log(`After numpad: result is:${result}, numAccumulator:${numAccumulator}`)
     })
 )
 
