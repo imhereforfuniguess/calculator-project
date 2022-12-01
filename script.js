@@ -53,7 +53,8 @@ equalsButton.addEventListener("click", ()=>{
 function pressEquals(){
     console.log(actionSetter)
     //console.log(`Before pressEquals result is:${result}, numAccumulator:${numAccumulator}`)
-    result = operate (actionSetter, result, parseInt(numAccumulator))
+    result = operate (actionSetter, result, parseFloat(numAccumulator))
+    result = Math.floor(result * 10) / 10
     numAccumulator = ''
     //console.log(`After pressEquals end result is:${result}, numAccumulator:${numAccumulator}`)
 }
@@ -90,7 +91,7 @@ actionButton.forEach(item =>
             actionSetter = temp
         } else {
             // First time just put accumulator into result
-            result = parseInt(numAccumulator); 
+            result = parseFloat(numAccumulator); 
         }
 
         numberDisplay.textContent = numberDisplay.textContent + item.textContent
