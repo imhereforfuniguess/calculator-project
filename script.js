@@ -1,26 +1,31 @@
 let num1 = 5;
 let num2 = 8;
 let numAccumulator = "" 
-let actionSetter = ''
+let actionSetter
+
 
 function add(x,y){
+    console.log(x+y);
     return x + y;
 }
 
-function subtracts(x,y){
+function sub(x,y){
+    console.log(x-y);
     return x - y;
 }
 
-function multiply(x,y){
-    return x + y
+function mul(x,y){
+    console.log(x*y);
+    return x * y
 }
 
-function divide(x,y){
-    return x + y
+function div(x,y){
+    console.log(x/y);
+    return x / y
 }
 
 function operate(caller, x, y){
-    caller(x,y)
+    return globalThis[caller](x,y)
 }
 
 
@@ -34,10 +39,9 @@ const numpad = document.querySelectorAll('.numpad')
 equalsButton.addEventListener("click", () => {
     num2 = parseInt(numAccumulator);
     numAccumulator = ""
-    console.log(num2)
     numberDisplay.textContent = numberDisplay.textContent + equalsButton.textContent
+    let result = operate(actionSetter,num1,num2);
 
-    result = operate(actionSetter,num1,num2);
     numberDisplay.textContent = numberDisplay.textContent + result
     }
 )
